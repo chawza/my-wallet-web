@@ -36,6 +36,13 @@ const login = async (username, password) => {
   storeUserDataToSession(token, payload);
 }
 
+const isUserAuthenticated = () => {
+    const token = sessionStorage.getItem('jwt');
+    if (!token) return false;
+    return true;
+}
+
 export {
-  login
+  login,
+  isUserAuthenticated
 }

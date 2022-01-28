@@ -12,7 +12,7 @@ const LoginPage = ({ history }) => {
     }
     try {
       await login(username, password);
-      history.push({pathname: '/home'})
+      history.push({pathname: '/dashboard'})
     } catch (err) {
       alert(err);
     }

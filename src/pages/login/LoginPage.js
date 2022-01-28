@@ -1,13 +1,12 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
+import { Container, Box, TextField, Button, Typography } from '@mui/material';
 import { login } from "../../utils/Session";
 
 const LoginPage = ({ history }) => {
-  const usernameField = useRef();
-  const passwordField = useRef();
+  const [formState, setFormState] = useState({ username: '', password: '' });
 
   const submitLogin = async () => {
-    const username = usernameField.current.value;
-    const password = passwordField.current.value;
+    const { username, password } = formState;
     if (username.length === 0 || password.length === 0) {
       return alert('please enter username and password!');
     }
@@ -21,24 +20,44 @@ const LoginPage = ({ history }) => {
 
   const passwordOnEnter = async (event) => {
     if (event.key === 'Enter') {
+      console.log(formState)
       return await submitLogin();
     }
   }
 
   return (
-    <div className={'login-page-wrapper'}>
-      <div className={'login-box'}>
-        <div className={'username-field-wrapper'}>
-          <input type="text" ref={usernameField} autoFocus/>
-        </div>
-        <div className={'password-field-wrapper'}>
-          <input type="password" ref={passwordField} onKeyPress={passwordOnEnter}/>
-        </div>
-        <div className={'submit-btn-wrapper'}>
-          <input type="submit" onClick={submitLogin}/>
-        </div>
-      </div>
-    </div>
+    <Container maxWidth='xs'>
+      <Box className="content-area" sx={{ mt: '15vh' }}>
+        <Typography variant="h4" >
+          Login YOUR Wallet
+        </Typography>
+        <Box
+          className="form-area"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            mt: 8
+          }}
+        >
+          <TextField
+            label="username"
+            autoFocus={true}
+            type="text"
+            onChange={(event) => setFormState({ ...formState, username: event.target.value })}
+          />
+          <TextField
+            label="password"
+            type="password"
+            onKeyPress={passwordOnEnter}
+            onChange={(event) => setFormState({ ...formState, password: event.target.value })}
+          />
+          <Button variant="contained" onClick={submitLogin}>
+            Sign in
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   )
 }
 

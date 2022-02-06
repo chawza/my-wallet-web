@@ -11,15 +11,11 @@ const LoginPage = () => {
   const [errorToast, setErrorToast] = useState(toastInitialState);
   const [loginToast, setLoginToast] = useState(toastInitialState);
 
-  const showErrorToast = (message) => {
-    setErrorToast({ show: true, message });
-    setInterval(() => setErrorToast(toastInitialState), 2000);
-  };
+  const showErrorToast = (message) => setErrorToast({ show: true, message });
+  const closeToastError = () => setErrorToast(toastInitialState);
 
-  const showLoginToast = (message) => {
-    setLoginToast({ show: true, message });
-    setInterval(() => setLoginToast(toastInitialState), 2000);
-  };
+  const showLoginToast = (message) => setLoginToast({ show: true, message });
+  const closeLoginToast = () => setLoginToast(toastInitialState);
 
   const submitLogin = async () => {
     const { username, password } = formState;
@@ -76,6 +72,8 @@ const LoginPage = () => {
         className='form-toast'
         open={errorToast.show}
         anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+        autoHideDuration={3000}
+        onClose={closeToastError}
       >
         <Alert severity="error">{errorToast.message}</Alert>
       </Snackbar>
@@ -83,6 +81,8 @@ const LoginPage = () => {
         className='login-toast'
         open={loginToast.show}
         anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+        autoHideDuration={3000}
+        onClose={closeLoginToast}
       >
         <Alert severity="error">{loginToast.message}</Alert>
       </Snackbar>

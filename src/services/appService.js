@@ -1,15 +1,8 @@
 import { TRANSACTION_API } from '../constants/serviceUrls';
-import { getUserSessionData } from '../utils/Session';
+import { createHeader } from '../utils/Common';
 
-const createHeader = () => {
-  const { jwt } = getUserSessionData();
-  return {
-    Authorization: `Bearer ${jwt}`
-  }
-}
 
 export const fetchUserTransactions = async (user_id) => {
-  const { jwt } = getUserSessionData();
   const request = new Request(
     `${TRANSACTION_API}/user/${user_id}`,
     {
@@ -20,3 +13,7 @@ export const fetchUserTransactions = async (user_id) => {
   const fetchedData = await fetch(request);
   return fetchedData.json();
 };
+
+export const fetchUserTransactionsById = (user_id) => {
+
+}

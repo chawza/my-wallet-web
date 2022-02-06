@@ -1,3 +1,5 @@
+import { getUserSessionData } from '../utils/Session';
+
 const MONTH_INDEX = {
   1: 'January',
   2: 'February',
@@ -15,4 +17,16 @@ const MONTH_INDEX = {
 
 export const datetimeToDayMonth = (datetime) => {
   return `${datetime.getDate()} ${MONTH_INDEX[datetime.getMonth()]}`
+}
+
+export const reducer = (state, action) => {
+  const { type, payload } = action;
+  return {...state, [type]: payload};
+}
+
+export const createHeader = () => {
+  const { jwt } = getUserSessionData();
+  return {
+    Authorization: `Bearer ${jwt}`
+  }
 }

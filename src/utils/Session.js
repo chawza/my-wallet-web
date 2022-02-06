@@ -1,22 +1,4 @@
-import {AUTH_API} from "../constants/serviceUrls";
-
-const fetchToken = async (username, password) => {
-  const request = new Request(
-    `${AUTH_API}/login`,
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        password
-      })
-    }
-  );
-  const response = await fetch(request)
-  if (response.status === 200) {
-    return response.json();
-  }
-  throw new Error('Login Failed');
-}
+import { fetchUserToken } from "../services/authenticationService";
 
 const decodeJwtToken = (token) => {
   const header = atob(token.split('.')[0]);
@@ -30,8 +12,15 @@ const storeUserDataToSession = (token, payload) => {
   sessionStorage.setItem('username', parsedPayload.username);
 }
 
+const getUserSessionData = () => {
+  return {
+    username: sessionStorage.getItem('username'),
+    jwt: sessionStorage.getItem('jwt')
+  }
+}
+
 const login = async (username, password) => {
-  const { token } = await fetchToken(username, password);
+  const { token } = await fetchUserToken(username, password);
   const { payload } = decodeJwtToken(token);
   storeUserDataToSession(token, payload);
 }
@@ -44,5 +33,6 @@ const isUserAuthenticated = () => {
 
 export {
   login,
-  isUserAuthenticated
+  isUserAuthenticated,
+  getUserSessionData
 }

@@ -1,26 +1,41 @@
 import React, { useState } from "react";
-import { Container, Box, TextField, Button, Typography } from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Snackbar, Alert } from '@mui/material';
 import { login } from "../../utils/Session";
+import { useHistory } from "react-router-dom";
 
-const LoginPage = ({ history }) => {
+const toastInitialState = { show: false, message: '' };
+
+const LoginPage = () => {
+  const history = useHistory();
   const [formState, setFormState] = useState({ username: '', password: '' });
+  const [errorToast, setErrorToast] = useState(toastInitialState);
+  const [loginToast, setLoginToast] = useState(toastInitialState);
+
+  const showErrorToast = (message) => {
+    setErrorToast({ show: true, message });
+    setInterval(() => setErrorToast(toastInitialState), 2000);
+  };
+
+  const showLoginToast = (message) => {
+    setLoginToast({ show: true, message });
+    setInterval(() => setLoginToast(toastInitialState), 2000);
+  };
 
   const submitLogin = async () => {
     const { username, password } = formState;
     if (username.length === 0 || password.length === 0) {
-      return alert('please enter username and password!');
+      return showErrorToast('please enter username and password!');
     }
     try {
       await login(username, password);
       history.push({pathname: '/dashboard'})
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      showLoginToast(error?.message || 'Login Failed');
     }
   }
 
   const passwordOnEnter = async (event) => {
     if (event.key === 'Enter') {
-      console.log(formState)
       return await submitLogin();
     }
   }
@@ -57,6 +72,20 @@ const LoginPage = ({ history }) => {
           </Button>
         </Box>
       </Box>
+      <Snackbar
+        className='form-toast'
+        open={errorToast.show}
+        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+      >
+        <Alert severity="error">{errorToast.message}</Alert>
+      </Snackbar>
+      <Snackbar
+        className='login-toast'
+        open={loginToast.show}
+        anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+      >
+        <Alert severity="error">{loginToast.message}</Alert>
+      </Snackbar>
     </Container>
   )
 }

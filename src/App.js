@@ -1,13 +1,20 @@
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch, useHistory } from 'react-router-dom'
 import LoginPage from './pages/login/LoginPage';
-import { createBrowserHistory } from 'history';
 import './App.css';
 import DashboardPage from './pages/Dashboard/DashboardPage';
+import TransactionRecordPage from './pages/TransactionRecord/TransactionRecordPage';
 import { isUserAuthenticated } from './utils/Session';
 
-const history = createBrowserHistory();
+
+const AuthenticatedRoute = ({history, Component}) => {
+  if (!isUserAuthenticated()) {
+    history.push({pathname: '/login'});
+  }
+  return Component;
+}
 
 function App() {
+  const history = useHistory();
   return (
     <div className="App">
       <link
@@ -17,13 +24,22 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/'>
-            {!isUserAuthenticated() ? <Redirect to='/login' /> : <Redirect to='/dashboard' /> }
+            <Redirect to='/login'/>
           </Route>
           <Route path='/login'>
-            <LoginPage history={history}/>
+            <LoginPage/>
           </Route>
           <Route path='/dashboard'>
-            <DashboardPage history={history} />
+            <AuthenticatedRoute 
+              history={history}
+              Component={<DashboardPage/>}
+            />  
+          </Route>
+          <Route path='/transaction-record'>
+            <AuthenticatedRoute 
+              history={history}
+              Component={<TransactionRecordPage
+            />}/>
           </Route>
         </Switch>
       </Router>

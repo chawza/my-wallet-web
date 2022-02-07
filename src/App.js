@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Route, Redirect, Switch, useHistory } from 'react-router-dom'
 import LoginPage from './pages/login/LoginPage';
 import './App.css';
+import { isUserAuthenticated } from './utils/Session';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import TransactionRecordPage from './pages/TransactionRecord/TransactionRecordPage';
-import { isUserAuthenticated } from './utils/Session';
+import UserPage from './pages/UserPage/UserPage';
 
 
 const AuthenticatedRoute = ({history, Component}) => {
@@ -38,8 +39,14 @@ function App() {
           <Route path='/transaction-record'>
             <AuthenticatedRoute 
               history={history}
-              Component={<TransactionRecordPage
-            />}/>
+              Component={<TransactionRecordPage/>}
+            />
+          </Route>
+          <Route path='/profile'>
+            <AuthenticatedRoute
+              history={history}
+              Component={<UserPage/>}
+            />
           </Route>
         </Switch>
       </Router>

@@ -1,0 +1,15 @@
+.profile-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.profile-row-title {
+  flex-grow: 1;
+  text-align: right;
+  padding-right: 6px;
+}
+
+.profile-row-value {
+  flex-grow: 3;
+  text-align: left;
+}

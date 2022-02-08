@@ -37,7 +37,7 @@ const LoginPage = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
+    <Container maxWidth='sm'>
       <Box className="content-area" sx={{ mt: '15vh' }}>
         <Typography variant="h4" >
           Login YOUR Wallet

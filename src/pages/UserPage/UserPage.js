@@ -8,7 +8,7 @@ const UserPage = () => {
   const { data: { profile } } = useFetch(`${USER_API}/profile`);
 
   return (
-    <Container className="user-page-wrapper" maxWidth='md'>
+    <Box className="user-page-wrapper">
       <Paper className="user-profile-wrapper">
         <Stack>
           <div className='profile-row'>
@@ -29,7 +29,7 @@ const UserPage = () => {
           </div>            
         </Stack>
       </Paper>
-    </Container>
+    </Box>
   )
 }
 

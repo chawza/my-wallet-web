@@ -9,28 +9,26 @@ const DashboardPage = () => {
   const { data: { accounts } } = useFetch(ACCOUNT_API);
 
   return (
-    <Container maxWidth='md'>
-      <Box className='dashboard-content-area'>
-        <Link to='/transaction-record'>
-          <Typography variant='h6'>
-            Transaction Record
-          </Typography>
-        </Link>
-        <Box
-          className="account-list-wrapper"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {
-            accounts
-            ? accounts.map((account) => <AccountCard key={account.id} {...account} />)
-            : "No Account Attached"
-          }
-        </Box>
+    <Box className='dashboard-content-area'>
+      <Link to='/transaction-record'>
+        <Typography variant='h6'>
+          Transaction Record
+        </Typography>
+      </Link>
+      <Box
+        className="account-list-wrapper"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {
+          accounts
+          ? accounts.map((account) => <AccountCard key={account.id} {...account} />)
+          : "No Account Attached"
+        }
       </Box>
-    </Container>
+    </Box>
   )
 }
 

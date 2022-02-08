@@ -44,7 +44,7 @@ const RecordGroupByDay = ({ records }) => {
         {groupDate}
       </Typography>
       {
-        records.map(record => <RecordRow {...record}/>)
+        records.map(record => <RecordRow key={record.id} {...record}/>)
       }
     </Box>
   )

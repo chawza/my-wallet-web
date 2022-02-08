@@ -5,23 +5,24 @@ import { isUserAuthenticated } from './utils/Session';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import TransactionRecordPage from './pages/TransactionRecord/TransactionRecordPage';
 import UserPage from './pages/UserPage/UserPage';
+import NavigationBar from './compontents/NavigationBar';
+import { Container } from '@mui/material';
 
 
 const AuthenticatedRoute = ({history, Component}) => {
   if (!isUserAuthenticated()) {
     history.push({pathname: '/login'});
   }
-  return Component;
+  return <>
+    <NavigationBar/>
+    {Component}
+  </>;
 }
 
 function App() {
   const history = useHistory();
   return (
-    <div className="App">
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      />
+    <Container className="App" maxWidth='lg'>
       <Router>
         <Switch>
           <Route exact path='/'>
@@ -50,7 +51,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </Container>
   );
 }
 

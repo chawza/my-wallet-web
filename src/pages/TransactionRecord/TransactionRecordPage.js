@@ -18,18 +18,16 @@ const TransactionRecordPage = () => {
   });
 
   return (
-    <Container maxWidth='md'>
-      <Box>
-        <Typography variant='h5'>
-          Transaction Record
-        </Typography>
-        {
-          transactions
-          ? <RecordList records={transactions}/>
-          : <CircularProgress />
-        }
-      </Box>
-    </Container>
+    <Box>
+      <Typography variant='h5'>
+        Transaction Record
+      </Typography>
+      {
+        transactions
+        ? <RecordList records={transactions}/>
+        : <CircularProgress />
+      }
+    </Box>
   );
 }
 

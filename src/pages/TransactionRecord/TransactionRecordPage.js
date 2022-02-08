@@ -1,5 +1,5 @@
-import React, { useReducer, useEffect } from "react";
-import { Container, Box, Typography, Table, CircularProgress } from "@mui/material";
+import React, { useReducer } from "react";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import RecordList from "../../compontents/RecordList";
 import useFetch from "../../utils/useFetch";
 import { reducer } from "../../utils/Common";
@@ -11,17 +11,14 @@ const TransactionIntialState = {
 }
 
 const TransactionRecordPage = () => {
-  const [state, dispatch] = useReducer(reducer, TransactionIntialState)
+  const [state, _] = useReducer(reducer, TransactionIntialState)
   const {data: { transactions }} = useFetch(TRANSACTION_API, {
     start_date: state.start_date,
     end_date: state.end_date
   });
 
   return (
-    <Box>
-      <Typography variant='h5'>
-        Transaction Record
-      </Typography>
+    <Box sx={{paddingTop: 6}}>
       {
         transactions
         ? <RecordList records={transactions}/>

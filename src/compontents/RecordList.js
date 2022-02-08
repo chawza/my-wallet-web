@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Paper } from '@mui/material';
 import { datetimeToDayMonth } from '../utils/Common';
 
 const isoDateToDateString = (isoDateTime) => {
@@ -8,26 +8,30 @@ const isoDateToDateString = (isoDateTime) => {
 
 const RecordRow = ({ amount, category, account, note }) => {
   return (
-    <Box
+    <Paper
       className='record-row'
       sx={{
         display: 'flex',
         flexDirection: 'row',
-      }}
+        py: 1.5,
+        px: 2
+      }}      
     >
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row'}}>
+        <Typography>
+          {category}
+        </Typography>
+        <Typography>
+          {account}
+        </Typography>
+        <Typography>
+          {note}
+        </Typography>
+      </Box>
       <Typography>
-        {category}
-      </Typography>
-      <Typography>
-        {account}
-      </Typography>
-      <Typography>
-        {note}
-      </Typography>
-      <Typography style={{flexGrow: 2}}>
         {amount}
       </Typography>
-    </Box>
+    </Paper>
   )
 }
 
@@ -40,19 +44,29 @@ const RecordGroupByDay = ({ records }) => {
       className='record-group-row'
       sx={{display: 'flex', flexDirection: 'column', alignItems: 'start'}}
     >
-      <Typography>
+      <Typography sx={{mx: 2}}>
         {groupDate}
       </Typography>
-      {
-        records.map(record => <RecordRow key={record.id} {...record}/>)
-      }
+      <Box
+        className='record-group-content-wrapper'
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          gap: 1
+        }}
+      >
+        {
+          records.map(record => <RecordRow key={record.id} {...record}/>)
+        }
+      </Box>
     </Box>
   )
 }
 
 const RecordList = ({ records }) => {
   if (!records) {
-    return <></>
+    return <Typography variant='h6'>No Transactions</Typography>
   }
 
   const groupReducer = (group, record) => {
@@ -64,7 +78,7 @@ const RecordList = ({ records }) => {
   const groupedRecords = records.reduce(groupReducer, {})
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column'}}>
+    <Box sx={{display: 'flex', flexDirection: 'column', gap: 1}}>
       {
         Object.keys(groupedRecords).map(key => <RecordGroupByDay key={key} records={groupedRecords[key]}/>)
       }

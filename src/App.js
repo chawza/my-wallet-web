@@ -13,45 +13,47 @@ const AuthenticatedRoute = ({history, Component}) => {
   if (!isUserAuthenticated()) {
     history.push({pathname: '/login'});
   }
-  return <>
-    <NavigationBar/>
-    {Component}
-  </>;
+  return Component;
 }
 
 function App() {
   const history = useHistory();
   return (
-    <Container className="App" maxWidth='lg'>
+    <div className='App'>
       <Router>
-        <Switch>
-          <Route exact path='/'>
-            <Redirect to='/login'/>
-          </Route>
-          <Route path='/login'>
-            <LoginPage/>
-          </Route>
-          <Route path='/dashboard'>
-            <AuthenticatedRoute 
-              history={history}
-              Component={<DashboardPage/>}
-            />  
-          </Route>
-          <Route path='/transaction-record'>
-            <AuthenticatedRoute 
-              history={history}
-              Component={<TransactionRecordPage/>}
-            />
-          </Route>
-          <Route path='/profile'>
-            <AuthenticatedRoute
-              history={history}
-              Component={<UserPage/>}
-            />
-          </Route>
-        </Switch>
-      </Router>
-    </Container>
+          <Switch>
+            <Route exact path='/'>
+              <Redirect to='/login'/>
+            </Route>
+            <Route path='/login'>
+              <LoginPage/>
+            </Route>
+            <div>
+              <NavigationBar/>
+              <Container maxWidth='lg'>
+                <Route path='/dashboard'>
+                  <AuthenticatedRoute 
+                    history={history}
+                    Component={<DashboardPage/>}
+                  />  
+                </Route>
+                <Route path='/transaction-record'>
+                  <AuthenticatedRoute 
+                    history={history}
+                    Component={<TransactionRecordPage/>}
+                  />
+                </Route>
+                <Route path='/profile'>
+                  <AuthenticatedRoute
+                    history={history}
+                    Component={<UserPage/>}
+                  />
+                </Route>
+              </Container>  
+            </div>
+          </Switch>
+        </Router>
+    </div>
   );
 }
 

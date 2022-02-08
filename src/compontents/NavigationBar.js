@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Typography, Toolbar, Button, Box } from '@mui/material';
+import { AppBar, Typography, Toolbar, Button, Box, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const appbarMenu = [
@@ -10,7 +10,8 @@ const appbarMenu = [
 const NavigationBar = () => {
   return (
     <AppBar position='static'>
-      <Toolbar>
+      <Container maxWidth='lg'>
+      <Toolbar disableGutters>
         <Typography variant='h5'>
           LOGO
         </Typography>
@@ -36,6 +37,7 @@ const NavigationBar = () => {
           </Button>
         </Link>
       </Toolbar>
+      </Container>
     </AppBar>
   )
 }

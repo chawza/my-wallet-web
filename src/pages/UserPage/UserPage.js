@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Stack, Paper, Typography, Container } from '@mui/material';
+import { Box, Stack, Paper, Typography } from '@mui/material';
 import useFetch from '../../utils/useFetch';
 import { USER_API } from '../../constants/serviceUrls';
 import './UserPage.css';

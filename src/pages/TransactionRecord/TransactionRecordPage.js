@@ -4,6 +4,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import RecordList from "../../compontents/RecordList";
+import AddRecordModal from "../../compontents/AddRecordModal";
 import useFetch from "../../utils/useFetch";
 import { reducer } from "../../utils/Common";
 import { TRANSACTION_API } from "../../constants/serviceUrls";
@@ -70,6 +71,10 @@ const TransactionRecordPage = () => {
           : <Typography variant='h6'>No Transactions</Typography>
         }
       </Box>
+      <AddRecordModal
+        visible={state.showAddModal}
+        dispatch={dispatch}
+      />
     </Box>
   );
 }

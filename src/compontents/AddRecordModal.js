@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, TextField, Select, MenuItem, Box, Stack, Container } from '@mui/material'
+import { Modal, Button, TextField, Select, MenuItem, Box, Stack, Container, InputAdornment } from '@mui/material'
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
@@ -27,9 +27,10 @@ const recordType = {
 }
 
 const addRecordFormInitialValue = {
-  account: '',
-  amount: 0,
-  date: Date.now()
+  account: accountList[0].id,
+  amount: '',
+  date: Date.now(),
+  type: recordType.EXPENSESES.value
 };
 
 const AddRecordModal = ({visible = false, dispatch}) => {
@@ -64,7 +65,6 @@ const AddRecordModal = ({visible = false, dispatch}) => {
         <Stack className='add-record-form-section' sx={{ gap: 2}}>
           <Select
             label='Account'
-            defaultValue={accountList[0].id}
             onChange={(value) => formFieldOnChange('account', value)}
             value={formState.account}
           >
@@ -72,7 +72,6 @@ const AddRecordModal = ({visible = false, dispatch}) => {
           </Select>
           <Select
             label='Type'
-            defaultValue={recordType.EXPENSESES.value}
             onChange={(value) => formFieldOnChange('type', value)}
             value={formState.type}
           >
@@ -83,6 +82,9 @@ const AddRecordModal = ({visible = false, dispatch}) => {
             type='number'
             onChange={value => formFieldOnChange('amount', value)}
             value={formState.amount}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Rp</InputAdornment>
+            }}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker

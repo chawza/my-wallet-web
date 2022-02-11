@@ -7,7 +7,7 @@ import RecordList from "../../compontents/RecordList";
 import AddRecordModal from "../../compontents/AddRecordModal";
 import useFetch from "../../utils/useFetch";
 import { reducer } from "../../utils/Common";
-import { TRANSACTION_API } from "../../constants/serviceUrls";
+import { TRANSACTION_API, ACCOUNT_API } from "../../constants/serviceUrls";
 
 const oneMinuteInMilisecond = 60000;
 const date30daysAgo = new Date((new Date()).getTime() - 30*24*60*oneMinuteInMilisecond)
@@ -24,6 +24,7 @@ const TransactionRecordPage = () => {
     start_date: state.startDate,
     end_date: state.endDate
   });
+  const { data: { accounts }} = useFetch(ACCOUNT_API);
 
   const handleDateChange = async (field, value) => {
     dispatch({ type: field, payload: value});
@@ -74,6 +75,7 @@ const TransactionRecordPage = () => {
       <AddRecordModal
         visible={state.showAddModal}
         dispatch={dispatch}
+        accounts={accounts}
       />
     </Box>
   );

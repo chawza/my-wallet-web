@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
-import { Modal, Button, TextField, Select, MenuItem, Box, Stack, Container, InputAdornment } from '@mui/material'
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, TextField, Select, MenuItem, Box, Stack, Container, InputAdornment, Typography } from '@mui/material'
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-
-
-const accountList = [
-  {
-    name: 'BCA Primary',
-    id: 'account-1'
-  }
-];
 
 const recordType = {
   EXPENSESES: {
@@ -26,15 +18,16 @@ const recordType = {
   }
 }
 
-const addRecordFormInitialValue = {
-  account: accountList[0].id,
-  amount: '',
-  date: Date.now(),
-  type: recordType.EXPENSESES.value
-};
 
-const AddRecordModal = ({visible = false, dispatch}) => {
+const AddRecordModal = ({visible = false, dispatch, accounts}) => {
+  const addRecordFormInitialValue = {
+    account: '',
+    amount: '',
+    date: Date.now(),
+    type: recordType.EXPENSESES.value
+  };
   const [ formState, setFormState ] = useState(addRecordFormInitialValue);
+
   const closeModal = () => {
     dispatch({ type: 'showAddModal', payload: false })
     setFormState(addRecordFormInitialValue);
@@ -47,11 +40,16 @@ const AddRecordModal = ({visible = false, dispatch}) => {
   const handleOnClickAdd = () => {
   }
 
+  useEffect(() => {
+    if (accounts && formState.account === '') {
+      setFormState({...formState, account: accounts[0].id})
+    }
+  }, [accounts])
+
   return (
     <Modal
       open={visible}
       onClose={closeModal}
-      
     >
       <Container
         className='add-modal-container'
@@ -62,13 +60,18 @@ const AddRecordModal = ({visible = false, dispatch}) => {
           padding: 4
         }}
       >
+        <Box className='form-action-top-section' sx={{mb: 4}}>
+          <Typography variant='h5'>
+            ADD RECORD
+          </Typography>
+        </Box>
         <Stack className='add-record-form-section' sx={{ gap: 2}}>
           <Select
             label='Account'
             onChange={(value) => formFieldOnChange('account', value)}
             value={formState.account}
           >
-            {accountList.map(account => <MenuItem key={`account-option-${account.id}`} value={account.id}>{account.name}</MenuItem>)}
+            {accounts?.map(account => <MenuItem key={`account-option-${account.id}`} value={account.id}>{account.name}</MenuItem>)}
           </Select>
           <Select
             label='Type'
@@ -94,7 +97,7 @@ const AddRecordModal = ({visible = false, dispatch}) => {
             />
           </LocalizationProvider>
         </Stack>
-        <Box className='form-action-section' sx={{ mt: 4}}>
+        <Box className='form-action-bottom-section' sx={{ mt: 4}}>
           <Button
             variant='contained'
             onClick={handleOnClickAdd}

@@ -65,10 +65,6 @@ const RecordGroupByDay = ({ records }) => {
 }
 
 const RecordList = ({ records }) => {
-  if (!records) {
-    return <Typography variant='h6'>No Transactions</Typography>
-  }
-
   const groupReducer = (group, record) => {
     const recordDate = isoDateToDateString(record.date);
     group[recordDate] = group[recordDate] ?? [];

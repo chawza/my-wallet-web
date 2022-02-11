@@ -18,7 +18,7 @@ const NavigationBar = () => {
         <Box sx={{flexGrow: 1, display: 'flex', ml: 1}}>
           {
             appbarMenu.map((menu) =>
-              <Link to={menu.path} style={{ textDecoration: 'none'}}>
+              <Link key={menu.title} to={menu.path} style={{ textDecoration: 'none'}}>
                 <Button
                   key={menu.title}
                   sx={{color: 'white', display: 'block'}}

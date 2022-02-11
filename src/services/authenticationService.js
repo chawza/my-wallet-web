@@ -12,7 +12,7 @@ export const fetchUserToken = async (username, password) => {
     }
   );
   const response = await fetch(request)
-  if (String(response.status)[0] === 2) {
+  if (String(response.status)[0] === '2') {
     return response.json();
   }
   throw new Error('Authorization Error');

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, TextField, Select, MenuItem, Box, Stack, Container, InputAdornment, Typography } from '@mui/material'
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { createNewRecord } from '../services/appService';
+import { recordCategories } from '../constants/recordConstants';
 
 const recordType = {
   EXPENSESES: {
@@ -18,15 +22,17 @@ const recordType = {
   }
 }
 
-
 const AddRecordModal = ({visible = false, dispatch, accounts}) => {
   const addRecordFormInitialValue = {
     account: '',
     amount: '',
     date: Date.now(),
-    type: recordType.EXPENSESES.value
+    type: recordType.EXPENSESES.value,
+    note: '',
+    category: recordCategories[0].text
   };
   const [ formState, setFormState ] = useState(addRecordFormInitialValue);
+  const [ showToast, setToast ] = useState(false);
 
   const closeModal = () => {
     dispatch({ type: 'showAddModal', payload: false })
@@ -37,7 +43,15 @@ const AddRecordModal = ({visible = false, dispatch, accounts}) => {
     setFormState({...formState, [field]: event.target.value});
   };
 
-  const handleOnClickAdd = () => {
+  const handleOnClickAdd = async () => {
+    try {
+      const newDate = new Date(formState.date);
+      const payload = { ...formState, date: newDate.toISOString()}
+      await createNewRecord(payload);
+      setToast(true);
+    } catch (error) {
+      alert(error)
+    }
   }
 
   useEffect(() => {
@@ -80,6 +94,13 @@ const AddRecordModal = ({visible = false, dispatch, accounts}) => {
           >
             {Object.keys(recordType).map(type => <MenuItem key={`record-type-option-${recordType[type].value}`} value={recordType[type].value}>{recordType[type].text}</MenuItem>)}
           </Select>
+          <Select
+            label='Category'
+            onChange={(value) => formFieldOnChange('category', value)}
+            value={formState.category}
+          >
+            {recordCategories.map(record => <MenuItem key={`record-type-option-${record.text}`} value={record.text}>{record.text}</MenuItem>)}
+          </Select>
           <TextField
             label='Amount'
             type='number'
@@ -96,6 +117,12 @@ const AddRecordModal = ({visible = false, dispatch, accounts}) => {
               renderInput={(params => <TextField {...params}/>)}
             />
           </LocalizationProvider>
+          <TextField
+            label='Note'
+            type='text'
+            value={formState.note}
+            onChange={value => formFieldOnChange('note', value)}
+          />
         </Stack>
         <Box className='form-action-bottom-section' sx={{ mt: 4}}>
           <Button
@@ -111,6 +138,15 @@ const AddRecordModal = ({visible = false, dispatch, accounts}) => {
             Cancel
           </Button>
         </Box>
+        <Snackbar
+          className='add-record-toast'
+          open={showToast}
+          anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+          autoHideDuration={2000}
+          onClose={() => setToast(false)}
+        >
+          <Alert severity='success'>Record Added</Alert>
+        </Snackbar>
       </Container>
     </Modal>
   )
